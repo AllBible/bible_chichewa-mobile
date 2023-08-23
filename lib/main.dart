@@ -1,5 +1,6 @@
-import 'package:chichewa_bible/screens/aboutus.dart';
+import 'package:chichewa_bible/screens/about.dart';
 import 'package:chichewa_bible/screens/app.dart';
+import 'package:chichewa_bible/screens/book.dart';
 import 'package:chichewa_bible/screens/chapter.dart';
 import 'package:flutter/material.dart';
 
@@ -14,15 +15,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '',
+      title: 'Buku Lopatulika',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => const ScreenApp(),
-        '/aboutus': (context) => const ScreenAboutUs(),
-        '/chapter': (context) => const ScreenChapter()
+        '/about': (context) => const ScreenAboutUs(),
+        '/chapter': (context) => const ScreenChapter(),
+        '/book': (context) => const ScreenBook()
       },
     );
   }

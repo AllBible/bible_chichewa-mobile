@@ -1,6 +1,10 @@
 import 'package:bible_chichewa/bible_chichewa.dart';
+import 'package:chichewa_bible/controllers/bible.dart';
+import 'package:chichewa_bible/widget/searchmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 
 class ScreenApp extends StatefulWidget {
   const ScreenApp({Key? key}) : super(key: key);
@@ -10,7 +14,8 @@ class ScreenApp extends StatefulWidget {
 }
 
 class _ScreenAppState extends State<ScreenApp> {
-  final bible = Bible();
+  final _controllerBible = Get.put(BibleController());
+
   var loading = true;
 
   // Bible configuration
@@ -20,21 +25,31 @@ class _ScreenAppState extends State<ScreenApp> {
   @override
   void initState() {
     super.initState();
-    // bible.init().then((value) => setState(() => loading = false));
+    // Instantiate NewVersion manager object (Using GCP Console app as example)
+    final newVersion = NewVersionPlus(
+      //iOSId: 'com.m2kdevelopments.biblechichewa.chichewa_bible',
+      androidId: 'com.m2kdevelopments.biblechichewa.chichewa_bible',
+    );
+    newVersion.showAlertIfNecessary(context: context);
+    _controllerBible.load().then((value) => setState(() => loading = false));
   }
 
-  void _onBook(String b) {
-    var index = bible.getBooks().indexOf(b);
-    setState(() {
-      book = BOOK.values[index];
-    });
+  void _onBook(int index) =>
+      Navigator.pushNamed(context, "/book", arguments: BOOK.values[index]);
+
+  void _onAbout() => Navigator.pushNamed(context, "/about");
+
+  void _onSearch(BuildContext context) {
+    showSearch(
+        context: context,
+        delegate: WidgetSearchMenu(_controllerBible.bible.value.getBooks()));
   }
 
   @override
   Widget build(BuildContext context) {
     return loading
         ? Scaffold(
-          body: Container(
+            body: Container(
               color: Colors.black87,
               child: Center(
                 child: Column(children: [
@@ -51,41 +66,70 @@ class _ScreenAppState extends State<ScreenApp> {
                 ]),
               ),
             ),
-        )
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.brown,
-              foregroundColor: Colors.brown,
-              title: const Row(
-                children: [Icon(Icons.book), Text("Bible")],
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: bible
-                    .getBooks()
-                    .map((book) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            elevation: 0.9,
-                            child: Column(
-                              children: [
-                                Text(book),
-                                ElevatedButton(
-                                    onPressed: () => _onBook(book),
-                                    child: const Row(
-                                      children: [
-                                        Icon(Icons.book),
-                                        Text("Read")
-                                      ],
-                                    ))
-                              ],
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
+          )
+        : Obx(
+            () => Scaffold(
+                appBar: AppBar(
+                  title: const Text("Buku Lopatulika"),
+                  elevation: 8.0,
+                  backgroundColor: Colors.brown,
+                  actions: [
+                    IconButton(
+                        onPressed: () => _onSearch(context),
+                        icon: const Icon(Icons.search)),
+                    IconButton(
+                        onPressed: _onAbout,
+                        icon: const Icon(Icons.info_outline))
+                  ],
+                ),
+                body: Container(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            crossAxisSpacing: 2.0,
+                            mainAxisSpacing: 1.0,
+                            mainAxisExtent: 60.0),
+                    itemCount: _controllerBible.bible.value
+                        .getBooks()
+                        .length, // Number of items in the grid
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 0.0),
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                  elevation: MaterialStateProperty.all(0.0),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white)),
+                              onPressed: () => _onBook(index),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    _controllerBible.bible.value
+                                        .getBooks()[index],
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    _controllerBible.bible.value
+                                        .getChapterCount(BOOK.values[index])
+                                        .toString(),
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                  const Icon(
+                                    Icons.book,
+                                    color: Color.fromARGB(255, 226, 187, 161),
+                                  )
+                                ],
+                              )));
+                    },
+                  ),
+                )),
           );
   }
 }

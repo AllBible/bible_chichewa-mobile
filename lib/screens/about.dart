@@ -66,7 +66,7 @@ class ScreenAboutUs extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: ListTile(
-                  leading: Icon(Icons.business),
+                  // leading: Icon(Icons.business),
                   title: Text(
                     "Welcome to the Chichewa Bible app, your digital companion to exploring and understanding the Holy Scriptures.",
                     textAlign: TextAlign.center,
@@ -83,12 +83,12 @@ class ScreenAboutUs extends StatelessWidget {
                     onPressed: _onShare,
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.blueGrey)),
+                            MaterialStateProperty.all(Colors.brown)),
                     child: const Row(
                       children: [
                         Icon(
                           Icons.share,
-                          color: Colors.orangeAccent,
+                          color: Colors.white,
                         ),
                         SizedBox(
                           width: 20,
@@ -143,7 +143,7 @@ class ScreenAboutUs extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () =>
-                          _loadUrl('https://github.com/m2kdevelopments'),
+                          _loadUrl('https://github.com/AllBible'),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.white)),

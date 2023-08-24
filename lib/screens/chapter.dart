@@ -2,6 +2,7 @@ import 'package:bible_chichewa/bible_chichewa.dart';
 import 'package:chichewa_bible/controllers/bible.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ScreenChapter extends StatefulWidget {
   const ScreenChapter({Key? key}) : super(key: key);
@@ -14,6 +15,15 @@ class _ScreenChapterState extends State<ScreenChapter> {
   final _controllerBible = Get.find<BibleController>();
 
   var verses = <String>[];
+
+  void _onShare(int b, int chapter, int v, String verse) {
+    var book = _controllerBible.bible.value.getBooks()[b];
+    var reference = "$book $chapter: ${v + 1}";
+    var id = "com.m2kdevelopments.biblechichewa";
+    var app = "https://play.google.com/store/apps/details?id=$id";
+    var subject = "Chichewa Bible - Mawu a Mulungu";
+    Share.share('$verse\n--$reference\n\n$app', subject: subject);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +62,21 @@ class _ScreenChapterState extends State<ScreenChapter> {
                               ),
                             ),
                             Expanded(
-                              child: Text(
-                                verse,
-                                style: const TextStyle(fontSize: 16.0),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  alignment: Alignment.centerLeft,
+                                  backgroundColor:
+                                      MaterialStateProperty.all(const Color.fromARGB(0, 255, 255, 255)),
+                                  elevation: MaterialStateProperty.all(0.0),
+                                ),
+                                onPressed: () {},
+                                onLongPress: () => _onShare(book, chapter,
+                                    verses.indexOf(verse) + 1, verse),
+                                child: Text(
+                                  verse,
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                                ),
                               ),
                             ),
                           ],

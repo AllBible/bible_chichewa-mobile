@@ -8,7 +8,7 @@ class WidgetSearchMenu extends SearchDelegate {
 
   void _onGoToBook(BuildContext context, String name) async {
     var index = names.indexOf(name);
-    Navigator.pushNamed(context, "/chapters", arguments: BOOK.values[index]);
+    Navigator.pushNamed(context, "/book", arguments: BOOK.values[index]);
   }
 
   @override

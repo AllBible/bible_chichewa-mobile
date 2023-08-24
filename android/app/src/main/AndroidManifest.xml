@@ -3,8 +3,8 @@
 <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="chichewa_bible"
-        android:name="Chichewa Bible - Mawu a Mulungu"
+        android:label="Chichewa Bible - Mawu a Mulungu"
+        android:name="${applicationName}"
         android:icon="@drawable/logo"
         android:roundIcon="@drawable/logo">
         <activity

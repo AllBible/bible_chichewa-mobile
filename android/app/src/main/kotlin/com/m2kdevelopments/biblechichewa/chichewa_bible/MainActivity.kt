@@ -1,4 +1,4 @@
-package com.m2kdevelopments.biblechichewa.chichewa_bible
+package com.m2kdevelopments.biblechichewa
 
 import io.flutter.embedding.android.FlutterActivity
 

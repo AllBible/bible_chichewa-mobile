@@ -27,8 +27,8 @@ class _ScreenAppState extends State<ScreenApp> {
     super.initState();
     // Instantiate NewVersion manager object (Using GCP Console app as example)
     final newVersion = NewVersionPlus(
-      //iOSId: 'com.m2kdevelopments.biblechichewa.chichewa_bible',
-      androidId: 'com.m2kdevelopments.biblechichewa.chichewa_bible',
+      //iOSId: 'com.m2kdevelopments.biblechichewa',
+      androidId: 'com.m2kdevelopments.biblechichewa',
     );
     newVersion.showAlertIfNecessary(context: context);
     _controllerBible.load().then((value) => setState(() => loading = false));

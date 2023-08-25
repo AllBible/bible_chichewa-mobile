@@ -26,15 +26,15 @@ class _ScreenAppState extends State<ScreenApp> {
   void initState() {
     super.initState();
     // Instantiate NewVersion manager object (Using GCP Console app as example)
-    // try {
-    //   final newVersion = NewVersionPlus(
-    //     //iOSId: 'com.m2kdevelopments.biblechichewa',
-    //     androidId: 'com.m2kdevelopments.biblechichewa',
-    //   );
-    //   newVersion.showAlertIfNecessary(context: context);
-    // } catch (e) {
-    //   print(e.toString());
-    // }
+    try {
+      final newVersion = NewVersionPlus(
+        //iOSId: 'com.m2kdevelopments.biblechichewa',
+        androidId: 'com.m2kdevelopments.biblechichewa',
+      );
+      newVersion.showAlertIfNecessary(context: context);
+    } catch (e) {
+      print(e.toString());
+    }
 
     _controllerBible.load().then((value) => setState(() => loading = false));
   }

@@ -14,7 +14,7 @@ class ScreenChapter extends StatefulWidget {
 class _ScreenChapterState extends State<ScreenChapter> {
   final _controllerBible = Get.find<BibleController>();
 
-  var verses = <String>[];
+  var verses = <Map<String, dynamic>>[];
 
   void _onShare(int b, int chapter, int v, String verse) {
     var book = _controllerBible.bible.value.getBooks()[b];
@@ -34,7 +34,12 @@ class _ScreenChapterState extends State<ScreenChapter> {
     if (verses.isEmpty) {
       _controllerBible.bible.value
           .getChapter(BOOK.values[book], chapter)
-          .then((list) => setState(() => verses = list));
+          .then((list) => setState(() {
+                var index = 0;
+                for (var item in list) {
+                  verses.add({"index": ++index, "verse": item});
+                }
+              }));
     }
 
     return Obx(() => Scaffold(
@@ -65,17 +70,21 @@ class _ScreenChapterState extends State<ScreenChapter> {
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                   alignment: Alignment.centerLeft,
-                                  backgroundColor:
-                                      MaterialStateProperty.all(const Color.fromARGB(0, 255, 255, 255)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromARGB(0, 255, 255, 255)),
                                   elevation: MaterialStateProperty.all(0.0),
                                 ),
                                 onPressed: () {},
-                                onLongPress: () => _onShare(book, chapter,
-                                    verses.indexOf(verse) + 1, verse),
+                                onLongPress: () => _onShare(
+                                    book,
+                                    chapter,
+                                    verse['index'] as int,
+                                    verse['verse'] as String),
                                 child: Text(
-                                  verse,
+                                  verse['verse'],
                                   textAlign: TextAlign.start,
-                                  style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                                  style: const TextStyle(
+                                      fontSize: 16.0, color: Colors.grey),
                                 ),
                               ),
                             ),

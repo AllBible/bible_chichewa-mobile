@@ -25,6 +25,8 @@ class _ScreenChapterState extends State<ScreenChapter> {
     Share.share('$verse\n--$reference\n\n$app', subject: subject);
   }
 
+  void _onSettings() => Navigator.pushNamed(context, "/settings");
+
   @override
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context)!.settings.arguments as List<int>;
@@ -48,50 +50,69 @@ class _ScreenChapterState extends State<ScreenChapter> {
                 "${_controllerBible.bible.value.getBooks()[book]} $chapter"),
             elevation: 8.0,
             backgroundColor: Colors.brown,
+            actions: [
+              IconButton(
+                  onPressed: () => _controllerBible.toggleLightMode(),
+                  icon: const Icon(Icons.contrast)),
+              IconButton(
+                  onPressed: _onSettings, icon: const Icon(Icons.settings)),
+            ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: verses
-                  .map((verse) => Padding(
-                        padding: const EdgeInsets.all(9.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                (verses.indexOf(verse) + 1).toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.brown),
-                              ),
-                            ),
-                            Expanded(
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  alignment: Alignment.centerLeft,
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color.fromARGB(0, 255, 255, 255)),
-                                  elevation: MaterialStateProperty.all(0.0),
-                                ),
-                                onPressed: () {},
-                                onLongPress: () => _onShare(
-                                    book,
-                                    chapter,
-                                    verse['index'] as int,
-                                    verse['verse'] as String),
+          body: Container(
+            color: _controllerBible.lightMode.value
+                ? Colors.white
+                : Colors.black87,
+            child: SingleChildScrollView(
+              child: Column(
+                children: verses
+                    .map((verse) => Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  verse['verse'],
-                                  textAlign: TextAlign.start,
+                                  (verses.indexOf(verse) + 1).toString(),
                                   style: const TextStyle(
-                                      fontSize: 16.0, color: Colors.grey),
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.brown),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ))
-                  .toList(),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    alignment: Alignment.centerLeft,
+                                    backgroundColor: MaterialStateProperty.all(
+                                        _controllerBible.lightMode.value
+                                            ? const Color.fromARGB(
+                                                0, 255, 255, 255)
+                                            : const Color.fromARGB(0, 0, 0, 0)),
+                                    elevation: MaterialStateProperty.all(0.0),
+                                  ),
+                                  onPressed: () {},
+                                  onLongPress: () => _onShare(
+                                      book,
+                                      chapter,
+                                      verse['index'] as int,
+                                      verse['verse'] as String),
+                                  child: Text(
+                                    verse['verse'],
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize:
+                                            _controllerBible.fontSize.value,
+                                        color: _controllerBible.lightMode.value
+                                            ? Colors.grey
+                                            : Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              ),
             ),
           ),
         ));

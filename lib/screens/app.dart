@@ -25,6 +25,7 @@ class _ScreenAppState extends State<ScreenApp> {
   @override
   void initState() {
     super.initState();
+    _controllerBible.loadSettings();
     // Instantiate NewVersion manager object (Using GCP Console app as example)
     try {
       final newVersion = NewVersionPlus(
@@ -35,12 +36,13 @@ class _ScreenAppState extends State<ScreenApp> {
     } catch (e) {
       print(e.toString());
     }
-
     _controllerBible.load().then((value) => setState(() => loading = false));
   }
 
   void _onBook(int index) =>
       Navigator.pushNamed(context, "/book", arguments: BOOK.values[index]);
+
+  void _onSettings() => Navigator.pushNamed(context, "/settings");
 
   void _onAbout() => Navigator.pushNamed(context, "/about");
 
@@ -83,11 +85,20 @@ class _ScreenAppState extends State<ScreenApp> {
                         onPressed: () => _onSearch(context),
                         icon: const Icon(Icons.search)),
                     IconButton(
+                        onPressed: () => _controllerBible.toggleLightMode(),
+                        icon: const Icon(Icons.contrast)),
+                    IconButton(
+                        onPressed: _onSettings,
+                        icon: const Icon(Icons.settings)),
+                    IconButton(
                         onPressed: _onAbout,
                         icon: const Icon(Icons.info_outline))
                   ],
                 ),
                 body: Container(
+                  color: _controllerBible.lightMode.value
+                      ? Colors.white
+                      : Colors.black87,
                   child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,8 +116,10 @@ class _ScreenAppState extends State<ScreenApp> {
                           child: ElevatedButton(
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0.0),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.white)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      _controllerBible.lightMode.value
+                                          ? Colors.white
+                                          : Colors.black87)),
                               onPressed: () => _onBook(index),
                               child: Row(
                                 children: [
@@ -114,17 +127,23 @@ class _ScreenAppState extends State<ScreenApp> {
                                     _controllerBible.bible.value
                                         .getBooks()[index],
                                     textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                        color: Colors.grey,
+                                    style: TextStyle(
+                                        color: _controllerBible.lightMode.value
+                                            ? Colors.grey
+                                            : Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 17),
+                                        fontSize:
+                                            _controllerBible.fontSize.value),
                                   ),
                                   const Spacer(),
                                   Text(
                                     _controllerBible.bible.value
                                         .getChapterCount(BOOK.values[index])
                                         .toString(),
-                                    style: const TextStyle(color: Colors.grey),
+                                    style: TextStyle(
+                                        color: _controllerBible.lightMode.value
+                                            ? Colors.grey
+                                            : Colors.white),
                                   ),
                                   const Icon(
                                     Icons.book,

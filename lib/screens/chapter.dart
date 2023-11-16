@@ -75,6 +75,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                                 child: Text(
                                   (verses.indexOf(verse) + 1).toString(),
                                   style: const TextStyle(
+                                      fontSize: 16.0,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.brown),
                                 ),
@@ -91,12 +92,8 @@ class _ScreenChapterState extends State<ScreenChapter> {
                                     elevation: MaterialStateProperty.all(0.0),
                                   ),
                                   onPressed: () {},
-                                  onLongPress: () => _onShare(
-                                      book,
-                                      chapter,
-                                      verse['index'] as int,
-                                      verse['verse'] as String),
-                                  child: Text(
+                                  onLongPress: () {},
+                                  child: SelectableText(
                                     verse['verse'],
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
@@ -108,6 +105,17 @@ class _ScreenChapterState extends State<ScreenChapter> {
                                   ),
                                 ),
                               ),
+                              IconButton(
+                                  onPressed: () => _onShare(
+                                      book,
+                                      chapter,
+                                      verse['index'] as int,
+                                      verse['verse'] as String),
+                                  icon: const Icon(
+                                    Icons.share,
+                                    size: 16.0,
+                                  ),
+                                  color: Colors.brown)
                             ],
                           ),
                         ))

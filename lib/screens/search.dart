@@ -65,9 +65,8 @@ class _ScreenSearchState extends State<ScreenSearch> {
                     padding: const EdgeInsets.all(18.0),
                     child: DropdownButton(
                       value: _selectedBook,
-                      style: const TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.brown ),
+                      style:
+                          const TextStyle(fontSize: 18.0, color: Colors.brown),
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down),
                       items: _controllerBible.bible.value
@@ -99,6 +98,7 @@ class _ScreenSearchState extends State<ScreenSearch> {
                                   child: Text(
                                     verse.getRef(),
                                     style: const TextStyle(
+                                        fontSize: 14.0,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.brown),
                                   ),

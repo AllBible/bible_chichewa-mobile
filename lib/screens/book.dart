@@ -38,7 +38,8 @@ class _ScreenBookState extends State<ScreenBook> {
           ],
         ),
         body: Container(
-          color: _controllerBible.lightMode.value ? Colors.white : Colors.black87,
+          color:
+              _controllerBible.lightMode.value ? Colors.white : Colors.black87,
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
@@ -62,7 +63,7 @@ class _ScreenBookState extends State<ScreenBook> {
                               ? Colors.grey
                               : Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 17)),
+                          fontSize: _controllerBible.fontSize.value)),
                 );
               }),
         ),

@@ -41,8 +41,8 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                 Slider(
                   value: _controllerBible.fontSize.value,
                   min: 10,
-                  max: 35,
-                  divisions: 10,
+                  max: 40,
+                  divisions: 30,
                   activeColor: Colors.brown,
                   label: _controllerBible.fontSize.value.round().toString(),
                   onChanged: (double value) =>

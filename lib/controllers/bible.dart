@@ -1,4 +1,5 @@
 import 'package:bible_chichewa/bible_chichewa.dart';
+import 'package:chichewa_bible/classes/verse.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,5 +33,32 @@ class BibleController extends GetxController {
     font ??= 18.0;
     lightMode.value = light;
     fontSize.value = font;
+  }
+
+  Future<List<Verse>> searchText(String query) async {
+    final verses = <Verse>[];
+    for (var b = 0; b < bible.value.getBooks().length; b++) {
+      var book = BOOK.values[b];
+      var name = bible.value.getBooks()[b];
+      var chapters = bible.value.getChapterCount(book);
+      for (var c = 1; c <= chapters; c++) {
+        for (var v = 1; v < await bible.value.getVerseCount(book, c); v++) {
+          var verse = await bible.value.getVerse(book, c, v);
+          if (verse.toLowerCase().contains(query.toLowerCase())) {
+            var index = verse.toLowerCase().indexOf(query.toLowerCase());
+            verses.add(
+              Verse(
+                  book: name,
+                  chapter: c,
+                  verse: v,
+                  text: verse,
+                  start: index,
+                  end: index + query.length),
+            );
+          }
+        }
+      }
+    }
+    return verses;
   }
 }

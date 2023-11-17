@@ -1,4 +1,3 @@
-import 'package:bible_chichewa/bible_chichewa.dart';
 import 'package:chichewa_bible/classes/verse.dart';
 import 'package:chichewa_bible/controllers/bible.dart';
 import 'package:flutter/material.dart';
@@ -14,19 +13,20 @@ class ScreenSearch extends StatefulWidget {
 class _ScreenSearchState extends State<ScreenSearch> {
   final _controllerBible = Get.put(BibleController());
   var _loading = true;
-  var verses = <Verse>[];
+  var _verses = <Verse>[];
   var _selectedBook = "Genesis";
-
+ 
   void _onSettings() => Navigator.pushNamed(context, "/settings");
 
   @override
   Widget build(BuildContext context) {
     var search = ModalRoute.of(context)!.settings.arguments as String;
+    
     _controllerBible.searchText(search).then((v) {
       if (_loading) {
         setState(() {
           _loading = false;
-          verses = v;
+          _verses = v;
         });
       }
     });
@@ -34,7 +34,7 @@ class _ScreenSearchState extends State<ScreenSearch> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.brown,
-          title: const Text("Buku Lopatulika"),
+          title: Text(search),
           actions: [
             IconButton(
                 onPressed: () => _controllerBible.toggleLightMode(),
@@ -73,7 +73,7 @@ class _ScreenSearchState extends State<ScreenSearch> {
                           .getBooks()
                           .map((String name) {
                         var count =
-                            verses.where((verse) => verse.book == name).length;
+                            _verses.where((verse) => verse.book == name).length;
 
                         return DropdownMenuItem(
                           value: name,
@@ -86,7 +86,7 @@ class _ScreenSearchState extends State<ScreenSearch> {
                           setState(() => _selectedBook = value!),
                     ),
                   ),
-                  ...verses
+                  ..._verses
                       .where((verse) => verse.book == _selectedBook)
                       .map((verse) => Padding(
                             padding: const EdgeInsets.all(9.0),

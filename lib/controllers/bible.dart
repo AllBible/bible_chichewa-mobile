@@ -1,5 +1,6 @@
 import 'package:bible_chichewa/bible_chichewa.dart';
 import 'package:chichewa_bible/classes/verse.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,10 @@ class BibleController extends GetxController {
     font ??= 18.0;
     lightMode.value = light;
     fontSize.value = font;
+  }
+
+  void addComment(BuildContext context, String? v1, String? v2, String? c) {
+    
   }
 
   Future<List<Verse>> searchText(String query) async {

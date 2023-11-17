@@ -11,11 +11,13 @@ class ScreenBook extends StatefulWidget {
 }
 
 class _ScreenBookState extends State<ScreenBook> {
+  
   final _controllerBible = Get.find<BibleController>();
 
   void _onChapter(BOOK book, int chapter) =>
       Navigator.pushNamed(context, "/chapter",
           arguments: [book.index, chapter]);
+
 
   void _onSettings() => Navigator.pushNamed(context, "/settings");
 

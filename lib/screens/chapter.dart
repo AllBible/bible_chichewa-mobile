@@ -1,8 +1,15 @@
+import 'dart:math';
+
 import 'package:bible_chichewa/bible_chichewa.dart';
+import 'package:chichewa_bible/classes/comment.dart';
+import 'package:chichewa_bible/classes/highlight.dart';
 import 'package:chichewa_bible/controllers/bible.dart';
+import 'package:chichewa_bible/database/comments.dart';
+import 'package:chichewa_bible/database/highlights.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:toast/toast.dart';
 
 class ScreenChapter extends StatefulWidget {
   const ScreenChapter({Key? key}) : super(key: key);
@@ -16,6 +23,14 @@ class _ScreenChapterState extends State<ScreenChapter> {
   final _commentTitle = TextEditingController();
   final _verseEnd = TextEditingController();
   final _comment = TextEditingController();
+  var _highlights = <Highlight>[];
+  final _verses = <Map<String, dynamic>>[];
+
+  @override
+  void initState() {
+    super.initState();
+    ToastContext().init(context);
+  }
 
   @override
   void dispose() {
@@ -24,8 +39,6 @@ class _ScreenChapterState extends State<ScreenChapter> {
     _comment.dispose();
     super.dispose();
   }
-
-  var verses = <Map<String, dynamic>>[];
 
   void _onShare(int b, int chapter, int v, String verse) {
     var book = _controllerBible.bible.value.getBooks()[b];
@@ -53,46 +66,121 @@ class _ScreenChapterState extends State<ScreenChapter> {
     }
   }
 
-  void _onComment(int book, int chapter) {
-    showDialog(
-        context: context,
-        builder: (c) => AlertDialog(
-              title: const Text(
-                "Ndemanga (Comment)",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.brown,
-                ),
-              ),
-              content: Column(
-                children: [
-                  Text(
-                      "${_controllerBible.bible.value.getBooks()[book]} $chapter"),
-                  TextFormField(
-                    maxLength: 3,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Mutu wa Ndemanga",
-                    ),
-                    controller: _commentTitle,
-                  ),
-                  TextFormField(
-                    minLines: 1,
-                    maxLines: 10,
-                    maxLength: 5000,
-                    keyboardType: TextInputType.multiline,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Ndemanga",
-                    ),
-                    controller: _comment,
-                  )
-                ],
-              ),
-            ));
+  void _addComment(int book, int chapter, Comment? exists) {
+    var title = _commentTitle.text;
+    var text = _comment.text;
+    var id = exists == null ? Random().nextInt(2534) + 7203859 : exists.id;
+    var comment = Comment(
+      id: id,
+      book: book,
+      chapter: chapter,
+      title: title,
+      comment: text,
+    );
+    if (exists == null) {
+      DatabaseComments.insertComment(comment);
+    } else {
+      DatabaseComments.updateComment(comment);
+    }
+    Toast.show("Ndemanga idawonjezedwa");
   }
 
-  void _onHighlight(int b, int chapter, int v, String verse) {
+  void _onComment(int book, int chapter) {
+    DatabaseComments.getCommentFrom(book, chapter).then((comment) {
+      _commentTitle.text = comment == null ? "" : comment.title;
+      _comment.text = comment == null ? "" : comment.comment;
+      return showDialog(
+        context: context,
+        builder: (c) => AlertDialog(
+          title: const Text(
+            "Ndemanga (Comment)",
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.brown,
+            ),
+          ),
+          content: SizedBox(
+            width: 800,
+            child: Column(
+              children: [
+                Text(
+                    "${_controllerBible.bible.value.getBooks()[book]} $chapter"),
+                TextFormField(
+                  maxLength: 300,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Mutu wa Ndemanga",
+                  ),
+                  controller: _commentTitle,
+                ),
+                TextFormField(
+                  minLines: 1,
+                  maxLines: 10,
+                  maxLength: 5000,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Ndemanga",
+                  ),
+                  controller: _comment,
+                ),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.brown)),
+                    onPressed: () => _addComment(book, chapter, comment),
+                    child: const Text("Onjezani Ndemanga"))
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  void _addHighlight(int b, int c, int v, String color) async {
+    var list = await DatabaseHighlights.getHighlists(b, c);
+    var h = list
+        .firstWhereOrNull((e) => e.book == b && e.chapter == c && e.verse == v);
+    if (h == null) {
+      DatabaseHighlights.insertHighlist(Highlight(
+          id: Random().nextInt(2534) + 7203859,
+          book: b,
+          chapter: c,
+          verse: v,
+          start: -1,
+          end: -1,
+          color: color));
+    } else {
+      DatabaseHighlights.updateHighlight(
+        h.id,
+        Highlight(
+            id: h.id,
+            book: b,
+            chapter: c,
+            verse: v,
+            start: -1,
+            end: -1,
+            color: color),
+      );
+    }
+
+    list = await DatabaseHighlights.getHighlists(b, c);
+    setState(() => _highlights = list);
+    Toast.show('Highlighted');
+  }
+
+  void _deleteHighlight(int b, int c, int v) async {
+    var list = await DatabaseHighlights.getHighlists(b, c);
+    var h = list
+        .firstWhereOrNull((e) => e.book == b && e.chapter == c && e.verse == v);
+    if (h != null) DatabaseHighlights.deleteHighlight(h.id);
+    list = await DatabaseHighlights.getHighlists(b, c);
+    setState(() => _highlights = list);
+    Toast.show('Highlight Removed');
+  }
+
+  void _onHighlight(int b, int chapter, int v) {
     showDialog(
       context: context,
       builder: (c) => AlertDialog(
@@ -112,7 +200,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                 Icons.block,
                 color: Colors.red,
               ),
-              onPressed: () {},
+              onPressed: () => _deleteHighlight(b, chapter, v),
             ),
             IconButton(
               tooltip: "Blue Highlight",
@@ -120,7 +208,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                 Icons.circle,
                 color: Colors.blue,
               ),
-              onPressed: () {},
+              onPressed: () => _addHighlight(b, chapter, v, 'blue'),
             ),
             IconButton(
               tooltip: "Orange Highlight",
@@ -128,7 +216,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                 Icons.circle,
                 color: Colors.orange,
               ),
-              onPressed: () {},
+              onPressed: () => _addHighlight(b, chapter, v, 'orange'),
             ),
             IconButton(
               tooltip: "Green Highlight",
@@ -136,7 +224,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                 Icons.circle,
                 color: Colors.green,
               ),
-              onPressed: () {},
+              onPressed: () => _addHighlight(b, chapter, v, 'green'),
             ),
             IconButton(
               tooltip: "Purple Highlight",
@@ -144,12 +232,31 @@ class _ScreenChapterState extends State<ScreenChapter> {
                 Icons.circle,
                 color: Colors.purple,
               ),
-              onPressed: () {},
+              onPressed: () => _addHighlight(b, chapter, v, 'purple'),
             )
           ],
         ),
       ),
     );
+  }
+
+  Color? _getVerseHighlight(verse) {
+    var h =
+        _highlights.firstWhereOrNull((r) => r.verse == (verse['index'] as int));
+    if (h == null) return null;
+    if (_controllerBible.lightMode.value) {
+      if (h.color == 'blue') return Colors.blue[50];
+      if (h.color == 'green') return Colors.green[50];
+      if (h.color == 'orange') return Colors.orange[50];
+      if (h.color == 'purple') return Colors.purple[50];
+    } else {
+      if (h.color == 'blue') return Colors.blue[900];
+      if (h.color == 'green') return Colors.green[900];
+      if (h.color == 'orange') return Colors.orange[900];
+      if (h.color == 'purple') return Colors.purple[900];
+    }
+
+    return null;
   }
 
   @override
@@ -158,13 +265,16 @@ class _ScreenChapterState extends State<ScreenChapter> {
     final book = data[0];
     final chapter = data[1] + 1;
 
-    if (verses.isEmpty) {
+    if (_verses.isEmpty) {
+      DatabaseHighlights.getHighlists(book, chapter)
+          .then((value) => setState(() => _highlights = value));
+
       _controllerBible.bible.value
           .getChapter(BOOK.values[book], chapter)
           .then((list) => setState(() {
                 var index = 0;
                 for (var item in list) {
-                  verses.add({"index": ++index, "verse": item});
+                  _verses.add({"index": ++index, "verse": item});
                 }
               }));
     }
@@ -194,7 +304,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  ...verses
+                  ..._verses
                       .map((verse) => Padding(
                             padding: const EdgeInsets.all(9.0),
                             child: Row(
@@ -203,7 +313,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    (verses.indexOf(verse) + 1).toString(),
+                                    (_verses.indexOf(verse) + 1).toString(),
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold,
@@ -219,6 +329,8 @@ class _ScreenChapterState extends State<ScreenChapter> {
                                         verse['verse'],
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
+                                            backgroundColor:
+                                                _getVerseHighlight(verse),
                                             fontSize:
                                                 _controllerBible.fontSize.value,
                                             color:
@@ -250,8 +362,7 @@ class _ScreenChapterState extends State<ScreenChapter> {
                                               onPressed: () => _onHighlight(
                                                   book,
                                                   chapter,
-                                                  verse['index'] as int,
-                                                  verse['verse'] as String),
+                                                  verse['index'] as int),
                                               icon: const Icon(
                                                 Icons.edit,
                                                 size: 16.0,

@@ -6,6 +6,7 @@ import 'package:chichewa_bible/screens/search.dart';
 import 'package:chichewa_bible/screens/settings.dart';
 import 'package:flutter/material.dart';
 
+
 void main() {
   runApp(const MyApp());
 }

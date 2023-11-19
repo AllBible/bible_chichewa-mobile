@@ -42,6 +42,9 @@ dependencies:
   share_plus: ^7.0.2
   get: ^4.6.5
   shared_preferences: ^2.2.2
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  toast: ^0.3.0
 
 dev_dependencies:
   flutter_test:

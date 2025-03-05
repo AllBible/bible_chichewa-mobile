@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":app:main" external.linked.project.path="$MODULE_DIR$/../../../app" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="kotlin-language" name="Kotlin">
+    <facet external-system-id="GRADLE" type="kotlin-language" name="Kotlin">
       <configuration version="5" platform="JVM 1.8" allPlatforms="JVM [1.8]" useProjectSettings="false">
         <compilerSettings>
           <option name="additionalArguments" value="-Xallow-no-source-files" />
@@ -14,11 +14,11 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/b6e24c48b90c7546e62e6383524a9e52/transformed/jetified-flutter_embedding_debug-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/37ce21053bd470958ff1df800921902a/transformed/jetified-armeabi_v7a_debug-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/aac0979fdf91c87b6b2ba11639be191d/transformed/jetified-arm64_v8a_debug-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/24b0537a6d39f4ea5fa285b2f57cc1fc/transformed/jetified-x86_64_debug-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/70da2374a9fb51099a0de1c60aa39013/transformed/jetified-x86_debug-1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/42b1c791a51489a1fea73d908c47e3e0/transformed/jetified-flutter_embedding_debug-1.0.0-c4cd48e186460b32d44585ce3c103271ab676355.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/d9d4775160cfc0dafa024dda73528b3b/transformed/jetified-armeabi_v7a_debug-1.0.0-c4cd48e186460b32d44585ce3c103271ab676355.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/e6f71c2e8c8e116670601a8056f5dc06/transformed/jetified-arm64_v8a_debug-1.0.0-c4cd48e186460b32d44585ce3c103271ab676355.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/076b93495ff6c99e240274baa78171de/transformed/jetified-x86_64_debug-1.0.0-c4cd48e186460b32d44585ce3c103271ab676355.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/c9540157cfe4c334f35e615b57e7f981/transformed/jetified-x86_debug-1.0.0-c4cd48e186460b32d44585ce3c103271ab676355.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-java8/2.2.0/cd3478503da69b1a7e0319bd2d1389943db9b364/lifecycle-common-java8-2.2.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/363d420cb182e57b35a4055385a98973/transformed/fragment-1.1.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/82b7d93a39357fbfd50390a4bd9276c8/transformed/viewpager-1.0.0-api.jar</arg>
@@ -48,7 +48,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/8f2980c29b3974589d6f12152c312fd9/transformed/jetified-kotlin-stdlib-1.7.10.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/56ca5b5d417a0488f727a8225f187e6b/transformed/jetified-kotlin-stdlib-common-1.7.10.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/0b60f826992969da9ba861187ec1f33e/transformed/jetified-annotations-13.0.jar</arg>
-                <arg>$MODULE_DIR$/../../../../../../../../../../Software/Android/SDK/platforms/android-33/android.jar</arg>
+                <arg>$MODULE_DIR$/../../../../../../../../../../Software/Android/SDK/platforms/android-34/android.jar</arg>
                 <arg>$MODULE_DIR$/../../../../../../../../../../Software/Android/SDK/build-tools/30.0.3/core-lambda-stubs.jar</arg>
               </args>
             </stringArg>
@@ -99,7 +99,7 @@
     <content url="file://$MODULE_DIR$/../../../../build/app/generated/source/buildConfig/debug">
       <sourceFolder url="file://$MODULE_DIR$/../../../../build/app/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 33, extension level 3 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 34, extension level 7 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
@@ -118,7 +118,7 @@
     <orderEntry type="library" name="Gradle: androidx.tracing:tracing:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.window:window-java:1.0.0-beta04@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.window:window:1.0.0-beta04@aar" level="project" />
-    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-c4cd48e186460b32d44585ce3c103271ab676355" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
@@ -131,10 +131,10 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2" level="project" />
-    <orderEntry type="library" name="Gradle: io.flutter:armeabi_v7a_debug:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d" level="project" />
-    <orderEntry type="library" name="Gradle: io.flutter:arm64_v8a_debug:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d" level="project" />
-    <orderEntry type="library" name="Gradle: io.flutter:x86_64_debug:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d" level="project" />
-    <orderEntry type="library" name="Gradle: io.flutter:x86_debug:1.0.0-cdbeda788a293fa29665dc3fa3d6e63bd221cb0d" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:armeabi_v7a_debug:1.0.0-c4cd48e186460b32d44585ce3c103271ab676355" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:arm64_v8a_debug:1.0.0-c4cd48e186460b32d44585ce3c103271ab676355" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:x86_64_debug:1.0.0-c4cd48e186460b32d44585ce3c103271ab676355" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:x86_debug:1.0.0-c4cd48e186460b32d44585ce3c103271ab676355" level="project" />
     <orderEntry type="library" name="Gradle: D" level="project" />
   </component>
 </module>
